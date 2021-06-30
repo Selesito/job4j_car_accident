@@ -20,23 +20,28 @@
 </head>
 <body>
 <div class="container pt-3">
-    <div class="row col-md-6 offset-md-3">
-        <div class="card" style="width: 100%">
-            <table class="table">
-                <thead>
+    <h2>Все нарушения!</h2>
+    <div class="card" style="width: 100%">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>№</th>
+                <th>Нарушение</th>
+                <th>Описание</th>
+                <th>Адрес</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${accidents}" var="accident">
                 <tr>
-                    <th>Пользователи!</th>
+                    <td><c:out value="${accident.id}"/></td>
+                    <td><c:out value="${accident.name}"/></td>
+                    <td><c:out value="${accident.text}"/></td>
+                    <td><c:out value="${accident.address}"/></td>
                 </tr>
-                </thead>
-                    <tbody>
-                    <c:forEach items="${users}" var="user">
-                        <tr>
-                            <td><c:out value="${user}"/></td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-            </table>
-        </div>
+            </c:forEach>
+            </tbody>
+        </table>
     </div>
 </div>
 </body>
