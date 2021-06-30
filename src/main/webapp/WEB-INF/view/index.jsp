@@ -20,6 +20,13 @@
 </head>
 <body>
 <div class="container pt-3">
+    <div class="col">
+        <ul class="nav float-right">
+            <li class="nav-item">
+                <a href="<c:url value='/create'/>">Добавить инцидент</a>
+            </li>
+        </ul>
+    </div>
     <h2>Все нарушения!</h2>
     <div class="card" style="width: 100%">
         <table class="table table-bordered">
