@@ -3,32 +3,16 @@ package ru.job4j.accident.repository;
 import org.springframework.stereotype.Repository;
 import ru.job4j.accident.model.Accident;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class AccidentMem {
-    private static final AtomicInteger ID = new AtomicInteger(4);
-    private final HashMap<Integer, Accident> accidents = new HashMap<>();
+    private static final AtomicInteger ID = new AtomicInteger(1);
+    private final Map<Integer, Accident> accidents = new HashMap<>();
 
-    public AccidentMem() {
-        saveAccident(new Accident("Скорость",
-                "Первысил допустимую в 2 раза", "Novosibirsk"));
-        saveAccident(new Accident("Стоп линия",
-                "Выезд на стоп линию", "Novosibirsk"));
-    }
-
-    public static AccidentMem instOf() {
-        return Lazy.INST;
-    }
-
-    private static final class Lazy {
-        private final static AccidentMem INST = new AccidentMem();
-    }
-
-    public Collection<Accident> getAccidents() {
-        return accidents.values();
+    public List<Accident> getAccidents() {
+        return new ArrayList<>(accidents.values());
     }
 
     public void saveAccident(Accident accident) {
@@ -36,5 +20,9 @@ public class AccidentMem {
             accident.setId(ID.incrementAndGet());
         }
         accidents.put(accident.getId(), accident);
+    }
+
+    public Accident findById(int id) {
+        return accidents.get(id);
     }
 }
