@@ -35,6 +35,7 @@
             <tr>
                 <th>№</th>
                 <th>Нарушение</th>
+                <th>Тип</th>
                 <th>Описание</th>
                 <th>Адрес</th>
                 <th><i class="fa fa-pencil-square-o" title="Редактировать"></i></th>
@@ -45,6 +46,7 @@
                 <tr>
                     <td><c:out value="${accident.id}"/></td>
                     <td><c:out value="${accident.name}"/></td>
+                    <td><c:out value="${accident.type.name}"/></td>
                     <td><c:out value="${accident.text}"/></td>
                     <td><c:out value="${accident.address}"/></td>
                     <td>

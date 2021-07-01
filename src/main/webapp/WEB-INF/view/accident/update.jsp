@@ -37,6 +37,9 @@
             <label for="address">Адрес инцидента</label>
             <input type="text" hidden class="form-control" name="address" title="Enter address..." id="address" value="${accident.address}">
           </div>
+          <div class="form-group" hidden>
+            <input type="text" hidden class="form-control" name="type.id" value="${accident.type.id}">
+          </div>
           <button name="submit" type="submit" value="Сохранить" class="btn btn-primary">Сохранить</button>
         </form>
       </div>

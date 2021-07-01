@@ -37,6 +37,13 @@
                         <label for="address">Адрес инцидента</label>
                         <input type="text" required class="form-control" name="address" title="Enter address..." id="address">
                     </div>
+                    <div class="form-group">
+                        <select name="type.id">
+                            <c:forEach var="type" items="${types}" >
+                                <option value="${type.id}">${type.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
                     <button name="submit" type="submit" value="Сохранить" class="btn btn-primary">Сохранить</button>
                 </form>
             </div>
