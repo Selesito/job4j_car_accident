@@ -40,6 +40,13 @@
           <div class="form-group" hidden>
             <input type="text" hidden class="form-control" name="type.id" value="${accident.type.id}">
           </div>
+          <div class="form-group" hidden>
+            <select name="rIds" multiple>
+              <c:forEach items="${accident.rules}" var="rule">
+                <option selected value="${rule.id}">${rule.name}</option>
+              </c:forEach>
+            </select>
+          </div>
           <button name="submit" type="submit" value="Сохранить" class="btn btn-primary">Сохранить</button>
         </form>
       </div>

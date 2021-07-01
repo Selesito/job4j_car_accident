@@ -39,8 +39,15 @@
                     </div>
                     <div class="form-group">
                         <select name="type.id">
-                            <c:forEach var="type" items="${types}" >
+                            <c:forEach var="type" items="${types}">
                                 <option value="${type.id}">${type.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select name="rIds" multiple>
+                            <c:forEach items="${rules}" var="rule">
+                                <option value="${rule.id}">${rule.name}</option>
                             </c:forEach>
                         </select>
                     </div>
