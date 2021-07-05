@@ -7,47 +7,35 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.accident.model.Accident;
-import ru.job4j.accident.model.AccidentType;
-import ru.job4j.accident.model.Rule;
-import ru.job4j.accident.repository.AccidentMem;
+import ru.job4j.accident.service.AccidentService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
-import java.util.Set;
 
 @Controller
 public class AccidentControl {
-    private final AccidentMem accidentMem;
+    private final AccidentService accidentService;
 
-    public AccidentControl(AccidentMem accidentMem) {
-        this.accidentMem = accidentMem;
+    public AccidentControl(AccidentService accidentService) {
+        this.accidentService = accidentService;
     }
 
     @GetMapping("/create")
     public String create(Model model) {
-        model.addAttribute("types", accidentMem.getTypes());
-        model.addAttribute("rules", accidentMem.getRules());
+        model.addAttribute("types", accidentService.findAllTypes());
+        model.addAttribute("rules", accidentService.findAllRules());
         return "accident/create";
     }
 
     @PostMapping("/save")
     public String save(@ModelAttribute Accident accident, HttpServletRequest req) {
         String[] ids = req.getParameterValues("rIds");
-        Set<Rule> rules = new HashSet<>();
-        for (String rsl : ids) {
-            Rule rule = accidentMem.findRuleById(Integer.parseInt(rsl));
-            rules.add(rule);
-        }
-        AccidentType type = accidentMem.findAccidentTypeById(accident.getType().getId());
-        accident.setType(type);
-        accident.setRules(rules);
-        accidentMem.saveAccident(accident);
+        accidentService.save(accident, ids);
         return "redirect:/";
     }
 
     @GetMapping("/update")
     public String update(@RequestParam("id") int id, Model model) {
-        model.addAttribute("accident", accidentMem.findAccidentById(id));
+        model.addAttribute("accident", accidentService.findAccidentById(id));
         return "accident/update";
     }
 }
