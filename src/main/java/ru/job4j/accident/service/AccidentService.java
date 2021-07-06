@@ -4,41 +4,43 @@ import org.springframework.stereotype.Service;
 import ru.job4j.accident.model.Accident;
 import ru.job4j.accident.model.AccidentType;
 import ru.job4j.accident.model.Rule;
-import ru.job4j.accident.repository.AccidentMem;
+import ru.job4j.accident.repository.AccidentJdbcTemplate;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Service
 public class AccidentService {
-    private final AccidentMem accidentMem;
 
-    public AccidentService(AccidentMem accidentMem) {
-        this.accidentMem = accidentMem;
+    private final AccidentJdbcTemplate jdbc;
+
+    public AccidentService(AccidentJdbcTemplate jdbc) {
+        this.jdbc = jdbc;
     }
 
-    public void save(Accident accident, String[] ids) {
-        Set<Rule> rules = new HashSet<>();
-        for (String rsl : ids) {
-            Rule rule = accidentMem.findRuleById(Integer.parseInt(rsl));
-            rules.add(rule);
-        }
-        AccidentType type = accidentMem.findAccidentTypeById(accident.getType().getId());
-        accident.setType(type);
-        accident.setRules(rules);
-        accidentMem.saveAccident(accident);
+    public List<Accident> findAllAccident() {
+        return jdbc.getAllAccident();
     }
 
-    public List<AccidentType> findAllTypes() {
-        return accidentMem.getTypes();
+    public Collection<AccidentType> findAllTypes() {
+        return jdbc.getAllTypes();
     }
 
-    public List<Rule> findAllRules() {
-        return accidentMem.getRules();
+    public Collection<Rule> findAllRules() {
+        return jdbc.getAllRules();
     }
 
     public Accident findAccidentById(int id) {
-        return accidentMem.findAccidentById(id);
+        return jdbc.findAccidentById(id);
+    }
+
+    public void save(Accident accident, String[] ids) {
+        String idRules = "";
+        for (String rsl : ids) {
+            idRules += rsl + " ";
+        }
+        jdbc.save(accident, idRules);
     }
 }

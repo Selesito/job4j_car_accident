@@ -3,19 +3,19 @@ package ru.job4j.accident.control;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ru.job4j.accident.repository.AccidentMem;
+import ru.job4j.accident.service.AccidentService;
 
 @Controller
 public class IndexControl {
-    private final AccidentMem accidentMem;
+    private final AccidentService service;
 
-    public IndexControl(AccidentMem accidentMem) {
-        this.accidentMem = accidentMem;
+    public IndexControl(AccidentService service) {
+        this.service = service;
     }
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("accidents", accidentMem.getAccidents());
+        model.addAttribute("accidents", service.findAllAccident());
         return "index";
     }
 }
