@@ -4,43 +4,47 @@ import org.springframework.stereotype.Service;
 import ru.job4j.accident.model.Accident;
 import ru.job4j.accident.model.AccidentType;
 import ru.job4j.accident.model.Rule;
-import ru.job4j.accident.repository.AccidentJdbcTemplate;
+import ru.job4j.accident.repository.AccidentHibernate;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class AccidentService {
 
-    private final AccidentJdbcTemplate jdbc;
+    private final AccidentHibernate hbm;
 
-    public AccidentService(AccidentJdbcTemplate jdbc) {
-        this.jdbc = jdbc;
+    public AccidentService(AccidentHibernate jdbc) {
+        this.hbm = jdbc;
     }
 
     public List<Accident> findAllAccident() {
-        return jdbc.getAllAccident();
+        return hbm.getAllAccident();
     }
 
     public Collection<AccidentType> findAllTypes() {
-        return jdbc.getAllTypes();
+        return hbm.getAllTypes();
     }
 
     public Collection<Rule> findAllRules() {
-        return jdbc.getAllRules();
+        return hbm.getAllRules();
     }
 
     public Accident findAccidentById(int id) {
-        return jdbc.findAccidentById(id);
+        return hbm.findAccidentById(id);
     }
 
     public void save(Accident accident, String[] ids) {
-        String idRules = "";
-        for (String rsl : ids) {
-            idRules += rsl + " ";
+        AccidentType accidentType = hbm.findTypeById(accident.getType().getId());
+        accident.setType(accidentType);
+        int[] idRules = Arrays.stream(ids).mapToInt(Integer::parseInt).toArray();
+        List<Integer> id = IntStream.of(idRules).boxed().collect(Collectors.toList());
+        accident.setRules(hbm.findRulesById(id));
+        if (accident.getId() == 0) {
+            hbm.crate(accident);
+        } else {
+            hbm.update(accident);
         }
-        jdbc.save(accident, idRules);
     }
 }
