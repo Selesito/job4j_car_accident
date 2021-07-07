@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
-@Repository
 public class AccidentHibernate {
     private final SessionFactory sf;
 

@@ -1,10 +1,13 @@
 package ru.job4j.accident.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.job4j.accident.model.Accident;
 import ru.job4j.accident.model.AccidentType;
 import ru.job4j.accident.model.Rule;
-import ru.job4j.accident.repository.AccidentHibernate;
+import ru.job4j.accident.repository.AccidentRepository;
+import ru.job4j.accident.repository.AccidentTypeRepository;
+import ru.job4j.accident.repository.RuleRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,39 +15,53 @@ import java.util.stream.IntStream;
 
 @Service
 public class AccidentService {
+    @Autowired
+    private AccidentRepository accidentRepository;
 
-    private final AccidentHibernate hbm;
+    @Autowired
+    private RuleRepository ruleRepository;
 
-    public AccidentService(AccidentHibernate jdbc) {
-        this.hbm = jdbc;
+    @Autowired
+    private AccidentTypeRepository accidentTypeRepository;
+
+    public AccidentService(AccidentRepository accidentRepository,
+                           RuleRepository ruleRepository,
+                           AccidentTypeRepository accidentTypeRepository) {
+        this.accidentRepository = accidentRepository;
+        this.ruleRepository = ruleRepository;
+        this.accidentTypeRepository = accidentTypeRepository;
     }
 
     public List<Accident> findAllAccident() {
-        return hbm.getAllAccident();
+        return accidentRepository.getAccident();
     }
 
     public Collection<AccidentType> findAllTypes() {
-        return hbm.getAllTypes();
+        List<AccidentType> types = new ArrayList<>();
+        accidentTypeRepository.findAll().forEach(types::add);
+        return types;
     }
 
     public Collection<Rule> findAllRules() {
-        return hbm.getAllRules();
-    }
-
-    public Accident findAccidentById(int id) {
-        return hbm.findAccidentById(id);
+        List<Rule> rules = new ArrayList<>();
+        ruleRepository.findAll().forEach(rules::add);
+        return rules;
     }
 
     public void save(Accident accident, String[] ids) {
-        AccidentType accidentType = hbm.findTypeById(accident.getType().getId());
+        AccidentType accidentType = accidentTypeRepository.getTypeId(accident.getType().getId());
         accident.setType(accidentType);
         int[] idRules = Arrays.stream(ids).mapToInt(Integer::parseInt).toArray();
         List<Integer> id = IntStream.of(idRules).boxed().collect(Collectors.toList());
-        accident.setRules(hbm.findRulesById(id));
         if (accident.getId() == 0) {
-            hbm.crate(accident);
-        } else {
-            hbm.update(accident);
+            accident = accidentRepository.save(accident);
         }
+        accident.setRules(new HashSet<>((List<Rule>) ruleRepository.findAllById(id)));
+        accidentRepository.save(accident);
+    }
+
+    public Accident findAccidentById(int id) {
+        return accidentRepository.getAccidentById(id);
     }
 }
+
