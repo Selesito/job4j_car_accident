@@ -18,10 +18,25 @@
 <html>
 <body>
 <div class="container pt-3">
+    <div class="col" style="margin-bottom: 35px">
+        <ul class="nav float-right">
+            <c:if test="${user != null}">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDDMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            ${user.username}
+                    </a>
+                    <div class="dropdown-menu text-center" aria-labelledby="navbarDDMenu">
+                        <a class="dropdown-item" href="<c:url value='/'/>">Главная</a>
+                        <a class="dropdown-item" href="<%=request.getContextPath()%>/logout">Выйти</a>
+                    </div>
+                </li>
+            </c:if>
+        </ul>
+    </div>
     <div class="row col-md-6 offset-md-3">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                <h6>Добавить инцидент!</h6>
+                <h4 style="color: cadetblue">Добавить инцидент!</h4>
             </div>
             <div class="card-body">
                 <form action="<c:url value='/save'/>" method="POST">
@@ -38,18 +53,24 @@
                         <input type="text" required class="form-control" name="address" title="Enter address..." id="address">
                     </div>
                     <div class="form-group">
-                        <select name="type.id">
-                            <c:forEach var="type" items="${types}">
-                                <option value="${type.id}">${type.name}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select name="rIds" multiple>
-                            <c:forEach items="${rules}" var="rule">
-                                <option value="${rule.id}">${rule.name}</option>
-                            </c:forEach>
-                        </select>
+                        <div class="row py-2">
+                            <div class="col">
+                                <select class="custom-select mr-sm-2" name="type.id" required>
+                                    <option selected="selected">Не выбрано...</option>
+                                    <c:forEach var="type" items="${types}">
+                                        <option value="${type.id}">${type.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select class="custom-select mr-sm-2" name="rIds" multiple size="3">
+                                    <option selected="selected">Не выбрано...</option>
+                                    <c:forEach items="${rules}" var="rule">
+                                        <option value="${rule.id}">${rule.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <button name="submit" type="submit" value="Сохранить" class="btn btn-primary">Сохранить</button>
                 </form>

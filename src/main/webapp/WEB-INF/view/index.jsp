@@ -23,16 +23,21 @@
 <div class="container pt-3">
     <div class="col">
         <ul class="nav float-right">
-            <li class="nav-item">
-                <a href="<c:url value='/create'/>">Добавить инцидент</a>
-            </li>
+            <c:if test="${user != null}">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDDMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            ${user.username}
+                    </a>
+                    <div class="dropdown-menu text-center" aria-labelledby="navbarDDMenu">
+                        <a class="dropdown-item" href="<c:url value='/create'/>">Добавить инцидент</a>
+                        <a class="dropdown-item" href="<%=request.getContextPath()%>/logout">Выйти</a>
+                    </div>
+                </li>
+            </c:if>
         </ul>
-        <div>
-            Login as : ${user.username}
-        </div>
     </div>
-    <h2>Все нарушения!</h2>
-    <div class="card" style="width: 100%">
+    <h2 style="color: cadetblue">Все инциденты!</h2>
+    <div class="card" style="width: 100%; margin-top: 25px">
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -40,8 +45,8 @@
                 <th>Нарушение</th>
                 <th>Тип</th>
                 <th>Описание</th>
-                <th>Правило</th>
-                <th>Адрес</th>
+                <th>КоАП РФ</th>
+                <th>Адрес нарушения</th>
                 <th><i class="fa fa-pencil-square-o" title="Редактировать"></i></th>
             </tr>
             </thead>

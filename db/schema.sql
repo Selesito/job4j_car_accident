@@ -23,11 +23,11 @@ INSERT INTO types(name) VALUES('Машина и велосипед');
 INSERT INTO types(name) VALUES('Машина и олень');
 INSERT INTO types(name) VALUES('Человек и велосипед');
 
-INSERT INTO rules(name) VALUES('Статья 1.1');
-INSERT INTO rules(name) VALUES('Статья 1.2');
-INSERT INTO rules(name) VALUES('Статья 1.3');
-INSERT INTO rules(name) VALUES('Статья 2.1');
-INSERT INTO rules(name) VALUES('Статья 2.2');
+INSERT INTO rules(name) VALUES('Статья 1.1 КоАП РФ ');
+INSERT INTO rules(name) VALUES('Статья 1.2 КоАП РФ ');
+INSERT INTO rules(name) VALUES('Статья 1.3 КоАП РФ ');
+INSERT INTO rules(name) VALUES('Статья 2.1 КоАП РФ ');
+INSERT INTO rules(name) VALUES('Статья 2.2 КоАП РФ ');
 
 
 
