@@ -1,5 +1,6 @@
 package ru.job4j.accident.control;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,8 +11,6 @@ import ru.job4j.accident.model.Accident;
 import ru.job4j.accident.model.User;
 import ru.job4j.accident.repository.AuthorityRepository;
 import ru.job4j.accident.repository.UserRepository;
-
-import java.util.Optional;
 
 @Controller
 public class RegControl {
@@ -29,16 +28,16 @@ public class RegControl {
 
     @PostMapping("/reg")
     public String save(@ModelAttribute User user, Model model) {
-        String error = null;
-        if (users.findByUsername(user.getUsername()) != null) {
-            error = "Пользователь с таким именем уже существует!";
-            model.addAttribute("errorMessage", error);
+        try {
+            user.setEnabled(true);
+            user.setPassword(encoder.encode(user.getPassword()));
+            user.setAuthority(authorities.findByAuthority("ROLE_USER"));
+            users.save(user);
+        } catch (DataIntegrityViolationException exception) {
+            exception.printStackTrace();
+            model.addAttribute("errorMessage", "Пользователь с таким именем уже существует!");
             return "reg";
         }
-        user.setEnabled(true);
-        user.setPassword(encoder.encode(user.getPassword()));
-        user.setAuthority(authorities.findByAuthority("ROLE_USER"));
-        users.save(user);
         return "redirect:/login";
     }
 

@@ -29,7 +29,7 @@
             }
         }
     </script>
-    <title>Bi-Bi-Car</title>
+    <title>Авто-инцидент!</title>
 </head>
 <body>
 <div class="container pt-3">
